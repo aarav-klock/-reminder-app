@@ -1,18 +1,22 @@
 from tkinter import *
+from tkinter import ttk
 import random
 from plyer import notification
 from tkinter import messagebox
 from PIL import Image, ImageTk
 import time
 
+
 t = Tk()
 t.title('Reminder App')
 t.geometry("500x300")
 
-#User-Input
-reminder_title = Label(t, text = "What do you want to be reminded for?", font=("poppins",10)). place(x=12,y=90)
-'''print("1. Class Schedule" ,"2. Meeting Schedule", "3. Workout", "4. Custom task",sep="\n")
-    Remainder_for=int(input("Choose a number: "))'''
+
+#Image
+notifier_img = ImageTk.PhotoImage(Image.open("notify_label.png"))
+label = Label(t, image = notifier_img)
+label.pack()
+
 
 #Greeting
 def greeting():
@@ -23,9 +27,15 @@ def greeting():
         return("Good Afternoon!")
     else:
         return("Good Evening!")
+greeting = Label(t,text = greeting(), font=("Helvetica",14,"bold")).place(x=12,y=70)
 
-# get details
+reminder_title = Label(t, text = "What do you want to be reminded for?", font=("poppins",12)). place(x=12,y=100)
+
+
+
+#Notifier
 def get_details():
+
     get_title = title.get()
     #get_msg = msg.get()
     get_time = time1.get()
@@ -47,7 +57,7 @@ def get_details():
                 time.strptime(get_time, '%H:%M')
                 return True
             except ValueError:
-                messagebox.showerror("Alert", "Time is invalid, please enter in HH:MM format.")
+                messagebox.showerror("Alert", "Time is invalid, please enter valid time in HH:MM format.")
     
 
 
@@ -65,70 +75,95 @@ def get_details():
                     time.sleep(7)
                 break
 
-# main
+
+
+
+def meeting_win():
+    new = Toplevel(t)
+    new.geometry("500x300")
+    new.title("Meeting Schedule")
+        
+    global notifier_img1
+    notifier_img1 = ImageTk.PhotoImage(Image.open("notify_label.png"))
+    label = Label(new, image = notifier_img1)
+    label.pack()
+
+
+
+    # Label - Title
+    t_label = Label(new, text="Title to Notify:",font=("poppins", 10))
+    t_label.place(x=12, y=145)
+
+    # ENTRY - Title
+    global title
+    title = Entry(new, width="25",font=("poppins", 13))
+    title.place(x=123, y=145)
+
+    # Label - Time
+    time_label = Label(new, text="Set Time:", font=("poppins", 10))
+    time_label.place(x=12, y=175)
+
+    # ENTRY - Time
+    global time1
+    time1 = Entry(new, width="5", font=("poppins", 13))
+    time1.place(x=123, y=175)
+
+    # Label - min
+    time_min_label = Label(new, text="HH:MM", font=("poppins", 10))
+    time_min_label.place(x=175, y=180)
+
+    # Button
+    but = Button(new, text="SET NOTIFICATION", font=("poppins", 10, "bold"), fg="#ffffff", bg="#528DFF", width=20,
+                relief="raised",
+                command=get_details)
+    but.place(x=170, y=230)
+
+meeting_button = ttk.Button(t, text ="Meeting Schedule", command = meeting_win).pack(side=LEFT, padx= 10, pady= 60)
+
+def workout_win():
+    new = Toplevel(t)
+    new.geometry("500x300")
+    new.title("Workout Schedule")
+
+    Label(new, text="Hey, Howdy?", font=('Helvetica 17 bold')).pack(pady=30)
+
+workout_button = ttk.Button(t, text ="Workout Schedule", command = workout_win).pack(side=LEFT ,pady = 60)
+
+def birthday_win():
+    new = Toplevel(t)
+    new.geometry("500x300")
+    new.title("Birthday/Anniversary Reminder")
+
+    Label(new, text="Hey, Howdy?", font=('Helvetica 17 bold')).pack(pady=30)
+
+birthday_button = ttk.Button(t, text ="Birthday/Anniversary Reminder", command = birthday_win).pack(side=LEFT,padx=20,pady=60)
+
+
+#Dropdown
 '''
-    #User-Input
-    print("What do you want to be reminded for?")
-    print("1. Class Schedule" ,"2. Meeting Schedule", "3. Workout", "4. Custom task",sep="\n")
-    Remainder_for=int(input("Choose a number: "))
+def show():
+	label.config( text = clicked.get() )
+options = [
+    "Custom Task",
+	"Meeting Schedule",
+	"CLass Schedule",
+	"Birthday/Anniversary Reminder",
+	"Water drinking Reminder",
+	"Medicine Reminder",
+	"Assignments Deadline Reminder",
+	"Workout Schedule"
+]
+clicked = StringVar()
+clicked.set( "Custom Task" )
+drop = OptionMenu( t , clicked , *options ).pack()
+#drop.place()
+button = Button( t , text = "Proceed" , command = show ).pack()
+#button.place()
 
-
-    if Remainder_for==1:
-        data_extracted = class_schedule()
-        notifier(data_extracted)
-    elif Remainder_for==2:
-        #date()
-        data_extracted = meeting_schedule()
-        notifier(data_extracted)
-    elif Remainder_for==3:
-        data_extracted = workout()
-        notifier(data_extracted)
-    elif Remainder_for==4:
-        a = custom()
-        notifier(a)
-'''
-
-greeting = Label(t,text = greeting(), font=("Aries",10,"bold")).place(x=12,y=65)
-
-# Create an object of tkinter ImageTk
-notifier_img = ImageTk.PhotoImage(Image.open("notify_label.png"))
-# Create a Label Widget to display the text or Image
-label = Label(t, image = notifier_img)
+label = Label( t , text = " " )
 label.pack()
+'''
 
-# Label - Title
-t_label = Label(t, text="Title to Notify:",font=("poppins", 10))
-t_label.place(x=12, y=145)
-
-# ENTRY - Title
-title = Entry(t, width="25",font=("poppins", 13))
-title.place(x=123, y=145)
-
-# Label - Message
-'''m_label = Label(t, text="Display Message", font=("poppins", 10))
-m_label.place(x=12, y=120)
-
-# ENTRY - Message
-msg = Entry(t, width="40", font=("poppins", 13))
-msg.place(x=123,height=30, y=120)'''
-
-# Label - Time
-time_label = Label(t, text="Set Time:", font=("poppins", 10))
-time_label.place(x=12, y=175)
-
-# ENTRY - Time
-time1 = Entry(t, width="5", font=("poppins", 13))
-time1.place(x=123, y=175)
-
-# Label - min
-time_min_label = Label(t, text="HH:MM", font=("poppins", 10))
-time_min_label.place(x=175, y=180)
-
-# Button
-but = Button(t, text="SET NOTIFICATION", font=("poppins", 10, "bold"), fg="#ffffff", bg="#528DFF", width=20,
-             relief="raised",
-             command=get_details)
-but.place(x=170, y=230)
 
 t.resizable(0,0)
 t.mainloop()
