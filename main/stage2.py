@@ -5,11 +5,7 @@ from plyer import notification
 from tkinter import messagebox
 from PIL import Image, ImageTk
 import time
-import os
 
-
-os.chdir('D:\CU\Sem 1\Term 1\Introduction to Python programming\Reminder app\images')
-#print(os.getcwd())
 
 
 t = Tk()
